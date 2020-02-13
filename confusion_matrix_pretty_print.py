@@ -125,7 +125,7 @@ def insert_totals(df_cm):
 #
 
 def pretty_plot_confusion_matrix(df_cm, annot=True, cmap="Oranges", fmt='.2f', fz=11,
-      lw=0.5, cbar=False, figsize=[8,8], show_null_values=0, pred_val_axis='y'):
+      lw=0.5, cbar=False, figsize=[8,8], show_null_values=0, pred_val_axis='y', ax1=None, title='Confusion matrix'):
     """
       print conf matrix with default layout (like matlab)
       params:
@@ -148,9 +148,10 @@ def pretty_plot_confusion_matrix(df_cm, annot=True, cmap="Oranges", fmt='.2f', f
 
     # create "Total" column
     insert_totals(df_cm)
-
-    #this is for print allways in the same window
-    fig, ax1 = get_new_fig('Conf matrix default', figsize)
+    
+    if (not ax1):
+        #this is for print allways in the same window
+        fig, ax1 = get_new_fig('Conf matrix default', figsize)
 
     #thanks for seaborn
     ax = sn.heatmap(df_cm, annot=annot, annot_kws={"size": fz}, linewidths=lw, ax=ax1,
@@ -198,15 +199,15 @@ def pretty_plot_confusion_matrix(df_cm, annot=True, cmap="Oranges", fmt='.2f', f
         ax.text(item['x'], item['y'], item['text'], **item['kw'])
 
     #titles and legends
-    ax.set_title('Confusion matrix')
+    ax.set_title(title)
     ax.set_xlabel(xlbl)
     ax.set_ylabel(ylbl)
-    plt.tight_layout()  #set layout slim
-    plt.show()
+    #plt.tight_layout()  #set layout slim
+    #plt.show()
 #
 
 def plot_confusion_matrix_from_data(y_test, predictions, columns=None, annot=True, cmap="Oranges",
-      fmt='.2f', fz=11, lw=0.5, cbar=False, figsize=[8,8], show_null_values=0, pred_val_axis='lin'):
+      fmt='.2f', fz=11, lw=0.5, cbar=False, figsize=[8,8], show_null_values=0, pred_val_axis='lin', ax1=None, title='Confusion matrix'):
     """
         plot confusion matrix function with y_test (actual values) and predictions (predic),
         whitout a confusion matrix yet
@@ -227,7 +228,7 @@ def plot_confusion_matrix_from_data(y_test, predictions, columns=None, annot=Tru
     fz = 11;
     show_null_values = 2
     df_cm = DataFrame(confm, index=columns, columns=columns)
-    pretty_plot_confusion_matrix(df_cm, fz=fz, cmap=cmap, figsize=figsize, show_null_values=show_null_values, pred_val_axis=pred_val_axis)
+    pretty_plot_confusion_matrix(df_cm, fz=fz, cmap=cmap, figsize=figsize, show_null_values=show_null_values, pred_val_axis=pred_val_axis, ax1=ax1, title=title)
 #
 
 
